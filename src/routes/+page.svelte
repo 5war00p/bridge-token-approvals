@@ -1,1 +1,7 @@
-<h1 class="text-3xl font-bold text-red-400 underline">Hello world!</h1>
+<script>
+	import TokenList from '$lib/components/TokenList.svelte';
+</script>
+
+<div class="flex items-center justify-center overflow-hidden">
+	<TokenList />
+</div>
