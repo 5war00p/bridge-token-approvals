@@ -16,6 +16,11 @@ declare global {
 			logoUrl: string
 			router: Address
 		}
+
+		interface TokenStatus {
+			tokenName: string
+			isApproved: boolean
+		}
 	}
 	interface Window {
 		ethereum?: MetaMaskInpageProvider

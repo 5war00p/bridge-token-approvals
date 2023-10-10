@@ -1,22 +1,21 @@
 <script lang="ts">
 	import { allTokenApprovals, grantApproval, revokeApproval } from '$lib/approvals';
-	import { walletAddress } from '$lib/store';
+	import { walletAddress, tokenStatusList } from '$lib/store';
 	import tokens from '$lib/tokens';
+	import ApprovalButton from './ApprovalButton.svelte';
 
-	const multicallApprovals = allTokenApprovals(tokens, $walletAddress!);
-
-	const onClick = async (approved: boolean, token: App.Token) => {
-		if ($walletAddress) {
-			if (approved) {
-				await revokeApproval(token.address, $walletAddress, token.router);
-			} else {
-				await grantApproval(token.address, $walletAddress, token.router);
-			}
-		}
-	};
+	allTokenApprovals(tokens, $walletAddress!).then((approvals) => {
+		const data = tokens.map((token, index) => {
+			return {
+				tokenName: token.name,
+				isApproved: !!approvals[index].result
+			};
+		});
+		tokenStatusList.set(data);
+	});
 </script>
 
-<div class="w-1/4 h-[680px] ml-auto p-4 overflow-auto">
+<div class="min-w-full h-[680px] ml-auto p-4 overflow-auto">
 	<section class="font-medium text-lg text-center p-2">Hop Tokens</section>
 	<ul role="list" class="divide-y divide-gray-100">
 		{#each tokens as token, index}
@@ -33,21 +32,9 @@
 					</div>
 				</div>
 				{#if $walletAddress}
-					{#await multicallApprovals}
-						LOADING...
-					{:then approvals}
-						{@const isTokenApproved = !!approvals[index].result}
-						<button
-							class="rounded-full bg-white px-2.5 py-1 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-100"
-							on:click={async () => await onClick(isTokenApproved, token)}
-						>
-							{#if isTokenApproved}
-								Unapprove
-							{:else}
-								Approve
-							{/if}
-						</button>
-					{/await}
+					{#key $tokenStatusList}
+						<ApprovalButton isApproved={$tokenStatusList?.[index]?.isApproved} {token} />
+					{/key}
 				{/if}
 			</li>
 		{/each}

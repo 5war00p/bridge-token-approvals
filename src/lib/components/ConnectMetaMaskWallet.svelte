@@ -3,15 +3,33 @@
 	import IconCheck from './IconCheck.svelte';
 	import { walletClient } from '$lib/client';
 	import { walletAddress } from '$lib/store';
+	import { node, waitForRemotePeers } from '$lib/waku';
+	import { scheduleApprovalsFetching, interval } from '$lib/backend/scheduledFetch';
+
+	$: {
+		if ($walletAddress) {
+			scheduleApprovalsFetching();
+		} else {
+			clearInterval(interval);
+		}
+	}
 
 	async function connectWallet() {
 		const [address] = await walletClient.request({ method: 'eth_requestAccounts' });
 		walletAddress.set(address);
 		localStorage.setItem('userWalletAddress', address);
+		// start waku's light node
+		await node.start();
+		await waitForRemotePeers();
+		import('$lib/backend/receiver').then((data) => data.subscribeTopic());
 	}
+
 	async function disconnectWallet() {
 		walletAddress.set(null);
 		localStorage.removeItem('userWalletAddress');
+		// stop waku's light node
+		import('$lib/backend/receiver').then((data) => data.unsubscribeTopic());
+		await node.stop();
 	}
 </script>
 
