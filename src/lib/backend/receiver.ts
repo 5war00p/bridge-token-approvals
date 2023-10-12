@@ -1,7 +1,7 @@
 import { decoder, node } from "$lib/waku";
 import type { IMessage } from "@waku/sdk";
 import { TokenApprovalWakuMessage } from "$lib/waku/protobuf";
-import { tokenStatusList } from "$lib/store";
+import { lastUpdated, tokenStatusList } from "$lib/store";
 
 // Create the callback function
 const callback = (wakuMessage: IMessage) => {
@@ -11,6 +11,7 @@ const callback = (wakuMessage: IMessage) => {
     const messageObj = TokenApprovalWakuMessage.decode(wakuMessage.payload).toJSON();
     const result = JSON.parse(messageObj.result ?? '[]');
     tokenStatusList.set(result)
+    lastUpdated.set(new Date())
 };
 
 

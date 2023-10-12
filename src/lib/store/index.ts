@@ -6,4 +6,6 @@ const walletAddress = writable<Address | null>(getLocalStoredValue)
 
 const tokenStatusList = writable<App.TokenStatus[]>([])
 
-export { walletAddress, tokenStatusList }
+const lastUpdated = writable<Date>(new Date())
+
+export { walletAddress, tokenStatusList, lastUpdated }

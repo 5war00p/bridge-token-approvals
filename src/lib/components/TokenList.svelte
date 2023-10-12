@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { allTokenApprovals, grantApproval, revokeApproval } from '$lib/approvals';
-	import { walletAddress, tokenStatusList } from '$lib/store';
+	import { allTokenApprovals } from '$lib/approvals';
+	import { walletAddress, tokenStatusList, lastUpdated } from '$lib/store';
 	import tokens from '$lib/tokens';
 	import ApprovalButton from './ApprovalButton.svelte';
 
@@ -12,6 +12,7 @@
 			};
 		});
 		tokenStatusList.set(data);
+		lastUpdated.set(new Date());
 	});
 </script>
 
