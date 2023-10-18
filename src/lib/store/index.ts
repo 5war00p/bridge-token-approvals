@@ -6,8 +6,16 @@ const walletAddress = writable<Address | null>(getLocalStoredValue)
 
 const tokenStatusList = writable<App.TokenStatus[]>([])
 
-const lastUpdated = writable<Date>(new Date())
+const lastSyncedStoreValue = localStorage.getItem('lastSynced') as string | null
+const lastUpdated = writable<string | null>(lastSyncedStoreValue)
+lastUpdated.subscribe((val) => {
+    if (val) {
+        localStorage.setItem('lastSynced', val)
+    }
+})
 
 const showWakuToast = writable<boolean>(false)
 
-export { walletAddress, tokenStatusList, lastUpdated, showWakuToast }
+const wakuNodeStatus = writable<App.WakuNodeStatus>('disconnected')
+
+export { walletAddress, tokenStatusList, lastUpdated, showWakuToast, wakuNodeStatus }

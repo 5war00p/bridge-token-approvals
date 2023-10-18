@@ -1,7 +1,7 @@
 <script>
+	import { lastUpdated } from '$lib/store';
 </script>
 
-<span
-	class="inline-flex items-center rounded-md bg-gray-100 px-4 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10"
-	>{new Date()}</span
+<span class="inline-flex italic items-center m-2 text-xs font-medium text-gray-600"
+	>Waku Synced at: {$lastUpdated}</span
 >

@@ -18,7 +18,8 @@ export const scheduleApprovalsFetching = () => {
                 isApproved: !!token.result
             }))
 
-            const protoData = TokenApprovalWakuMessage.create({ result: JSON.stringify(message) })
+            const stringifiedList = JSON.stringify(message)
+            const protoData = TokenApprovalWakuMessage.create({ result: stringifiedList })
             await node.lightPush.send(encoder, { payload: serializeMessage(protoData) })
         }).catch(console.error)
     }

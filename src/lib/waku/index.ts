@@ -10,7 +10,6 @@ export const waitForRemotePeers = async () => {
     ]);
 }
 
-
 // Create and start a Light Node
 export const node = await createLightNode({
     defaultBootstrap: true,
@@ -21,5 +20,5 @@ export const node = await createLightNode({
 const contentTopic = "/bridge-token-approvals/1/approvals/proto";
 
 // message encoder and decoder
-export const encoder = createEncoder({ contentTopic, ephemeral: false });
+export const encoder = createEncoder({ contentTopic, ephemeral: true });
 export const decoder = createDecoder(contentTopic);

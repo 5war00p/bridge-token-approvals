@@ -21,6 +21,8 @@ declare global {
 			tokenName: string
 			isApproved: boolean
 		}
+
+		type WakuNodeStatus = 'connected' | 'connecting' | 'failed' | 'disconnected'
 	}
 	interface Window {
 		ethereum?: MetaMaskInpageProvider

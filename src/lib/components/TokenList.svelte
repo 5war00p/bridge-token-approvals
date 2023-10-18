@@ -1,24 +1,23 @@
 <script lang="ts">
 	import toast, { Toaster } from 'svelte-french-toast';
 	import { allTokenApprovals } from '$lib/approvals';
-	import { walletAddress, tokenStatusList, lastUpdated, showWakuToast } from '$lib/store';
+	import { walletAddress, tokenStatusList, showWakuToast } from '$lib/store';
 	import tokens from '$lib/tokens';
 	import ApprovalButton from './ApprovalButton.svelte';
 
-	$: {
-		if ($walletAddress) {
-			allTokenApprovals(tokens, $walletAddress!).then((approvals) => {
-				const data = tokens.map((token, index) => {
-					return {
-						tokenName: token.name,
-						isApproved: !!approvals[index].result
-					};
-				});
-				tokenStatusList.set(data);
-				lastUpdated.set(new Date());
-			});
-		}
-	}
+	// $: {
+	// 	if ($walletAddress) {
+	// 		allTokenApprovals(tokens, $walletAddress!).then((approvals) => {
+	// 			const data = tokens.map((token, index) => {
+	// 				return {
+	// 					tokenName: token.name,
+	// 					isApproved: !!approvals[index].result
+	// 				};
+	// 			});
+	// 			tokenStatusList.set(data);
+	// 		});
+	// 	}
+	// }
 
 	showWakuToast.subscribe((value) => {
 		if (!!value) {
@@ -28,7 +27,7 @@
 	});
 </script>
 
-<div class="min-w-full h-[680px] ml-auto p-4 overflow-auto">
+<div class="min-w-full ml-auto p-4 overflow-auto">
 	<section class="font-medium text-lg text-center p-2">Hop Tokens</section>
 	<ul role="list" class="divide-y divide-gray-100">
 		{#each tokens as token, index}
@@ -53,6 +52,4 @@
 		{/each}
 	</ul>
 </div>
-{#if $tokenStatusList.length}
-	<Toaster />
-{/if}
+<Toaster />

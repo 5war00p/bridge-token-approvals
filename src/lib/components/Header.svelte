@@ -1,6 +1,7 @@
 <script>
 	import ConnectMetaMaskWallet from './ConnectMetaMaskWallet.svelte';
-	import LastUpdateBadge from './LastUpdateBadge.svelte';
+	import PeerConnectionBadge from './PeerConnection.svelte';
+	import { wakuNodeStatus } from '$lib/store';
 </script>
 
 <div class="md:flex md:items-center md:justify-between p-4">
@@ -10,7 +11,9 @@
 		>
 			Token Approvals
 		</h2>
-		<LastUpdateBadge />
+		{#key $wakuNodeStatus}
+			<PeerConnectionBadge />
+		{/key}
 	</div>
 	<div class="mt-4 flex md:ml-4 md:mt-0">
 		<ConnectMetaMaskWallet />
