@@ -34,6 +34,7 @@
 	"dependencies": {
 		"@waku/sdk": "^0.0.19",
 		"protobufjs": "^7.2.5",
+		"svelte-french-toast": "^1.2.0",
 		"viem": "^1.15.4"
 	}
 }

@@ -1,7 +1,6 @@
 <script>
 	import ConnectMetaMaskWallet from './ConnectMetaMaskWallet.svelte';
 	import LastUpdateBadge from './LastUpdateBadge.svelte';
-	import PeerConnectionBadge from './PeerConnectionBadge.svelte';
 </script>
 
 <div class="md:flex md:items-center md:justify-between p-4">
@@ -12,7 +11,6 @@
 			Token Approvals
 		</h2>
 		<LastUpdateBadge />
-		<PeerConnectionBadge type={'connecting'} />
 	</div>
 	<div class="mt-4 flex md:ml-4 md:mt-0">
 		<ConnectMetaMaskWallet />

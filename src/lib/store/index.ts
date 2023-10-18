@@ -8,4 +8,6 @@ const tokenStatusList = writable<App.TokenStatus[]>([])
 
 const lastUpdated = writable<Date>(new Date())
 
-export { walletAddress, tokenStatusList, lastUpdated }
+const showWakuToast = writable<boolean>(false)
+
+export { walletAddress, tokenStatusList, lastUpdated, showWakuToast }

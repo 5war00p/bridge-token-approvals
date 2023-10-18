@@ -1,18 +1,30 @@
 <script lang="ts">
+	import toast, { Toaster } from 'svelte-french-toast';
 	import { allTokenApprovals } from '$lib/approvals';
-	import { walletAddress, tokenStatusList, lastUpdated } from '$lib/store';
+	import { walletAddress, tokenStatusList, lastUpdated, showWakuToast } from '$lib/store';
 	import tokens from '$lib/tokens';
 	import ApprovalButton from './ApprovalButton.svelte';
 
-	allTokenApprovals(tokens, $walletAddress!).then((approvals) => {
-		const data = tokens.map((token, index) => {
-			return {
-				tokenName: token.name,
-				isApproved: !!approvals[index].result
-			};
-		});
-		tokenStatusList.set(data);
-		lastUpdated.set(new Date());
+	$: {
+		if ($walletAddress) {
+			allTokenApprovals(tokens, $walletAddress!).then((approvals) => {
+				const data = tokens.map((token, index) => {
+					return {
+						tokenName: token.name,
+						isApproved: !!approvals[index].result
+					};
+				});
+				tokenStatusList.set(data);
+				lastUpdated.set(new Date());
+			});
+		}
+	}
+
+	showWakuToast.subscribe((value) => {
+		if (!!value) {
+			toast.success('Got Token Approval Updates from Waku Filter!', { position: 'bottom-center' });
+			showWakuToast.set(false);
+		}
 	});
 </script>
 
@@ -41,3 +53,6 @@
 		{/each}
 	</ul>
 </div>
+{#if $tokenStatusList.length}
+	<Toaster />
+{/if}

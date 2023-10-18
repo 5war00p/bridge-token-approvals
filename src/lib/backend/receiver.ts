@@ -1,14 +1,18 @@
 import { decoder, node } from "$lib/waku";
 import type { IMessage } from "@waku/sdk";
 import { TokenApprovalWakuMessage } from "$lib/waku/protobuf";
-import { lastUpdated, tokenStatusList } from "$lib/store";
+import { get } from 'svelte/store'
+import { lastUpdated, showWakuToast, tokenStatusList } from "$lib/store";
 
-// Create the callback function
-const callback = (wakuMessage: IMessage) => {
+export const callback = (wakuMessage: IMessage) => {
     // Check if there is a payload on the message
     if (!wakuMessage.payload) return;
-    // Render the messageObj as desired in your application
+
     const messageObj = TokenApprovalWakuMessage.decode(wakuMessage.payload).toJSON();
+
+    if (messageObj.result !== JSON.stringify(get(tokenStatusList)))
+        showWakuToast.set(true)
+
     const result = JSON.parse(messageObj.result ?? '[]');
     tokenStatusList.set(result)
     lastUpdated.set(new Date())

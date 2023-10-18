@@ -21,14 +21,16 @@
 		// start waku's light node
 		await node.start();
 		await waitForRemotePeers();
-		import('$lib/backend/receiver').then((data) => data.subscribeTopic());
+		// !DEBT: always use dynamic import once node has started else it throws undefined error
+		import('$lib/backend/receiver').then((data) => data.subscribeTopic()).catch(console.error);
 	}
 
 	async function disconnectWallet() {
 		walletAddress.set(null);
 		localStorage.removeItem('userWalletAddress');
+		// !DEBT: always use dynamic import once node has started else it throws undefined error
+		import('$lib/backend/receiver').then((data) => data.unsubscribeTopic()).catch(console.error);
 		// stop waku's light node
-		import('$lib/backend/receiver').then((data) => data.unsubscribeTopic());
 		await node.stop();
 	}
 </script>
