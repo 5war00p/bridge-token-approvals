@@ -3,27 +3,24 @@
 	import IconCheck from './IconCheck.svelte';
 	import { walletClient } from '$lib/client';
 	import { walletAddress, wakuNodeStatus } from '$lib/store';
-	import { node, waitForRemotePeers } from '$lib/waku';
+	import { wakuNode, waitForRemotePeers } from '$lib/waku';
 	import { scheduleApprovalsFetching, interval } from '$lib/backend/scheduledFetch';
 	import { onMount } from 'svelte';
 
 	async function establishWakuConnection() {
-		console.log('>>> hereer');
 		wakuNodeStatus.set('connecting');
 		// start waku's light node
-		node
+		wakuNode
 			.start()
 			.then(() => {
-				console.log(node.isStarted());
-				if (node.isStarted()) return waitForRemotePeers();
+				if (wakuNode.isStarted()) return waitForRemotePeers();
 			})
 			.then(() => {
-				return node.connectionManager.getPeersByDiscovery();
+				return wakuNode.connectionManager.getPeersByDiscovery();
 			})
 			.then((data) => {
-				console.log(data);
 				if (
-					node.libp2p.getConnections().length ||
+					wakuNode.libp2p.getConnections().length ||
 					data.CONNECTED.bootstrap.length ||
 					data.CONNECTED['peer-exchange'].length
 				) {
@@ -60,7 +57,7 @@
 		// !DEBT: always use dynamic import once node has started else it throws undefined error
 		import('$lib/backend/receiver').then((data) => data.unsubscribeTopic()).catch(console.error);
 		// stop waku's light node
-		await node.stop();
+		await wakuNode.stop();
 		wakuNodeStatus.set('disconnected');
 		clearInterval(interval);
 	}

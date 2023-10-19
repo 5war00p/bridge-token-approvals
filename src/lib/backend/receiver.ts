@@ -1,4 +1,4 @@
-import { decoder, node } from "$lib/waku";
+import { decoder, wakuNode } from "$lib/waku";
 import type { IMessage, Unsubscribe } from "@waku/sdk";
 import { TokenApprovalWakuMessage } from "$lib/waku/protobuf";
 import { get } from 'svelte/store'
@@ -25,5 +25,5 @@ export const callback = (wakuMessage: IMessage) => {
 // Subscribe & Unsubscribe to content topics
 export let unsubscribeTopic: Unsubscribe = () => { }
 export const subscribeTopic = async () => {
-    unsubscribeTopic = await node.filter.subscribe([decoder], callback)
+    unsubscribeTopic = await wakuNode.filter.subscribe([decoder], callback)
 }
