@@ -1,11 +1,27 @@
 <script lang="ts">
 	import IconPlus from './IconPlus.svelte';
 	import IconCheck from './IconCheck.svelte';
+	import IconDownload from './IconDownload.svelte';
 	import { walletClient } from '$lib/client';
 	import { walletAddress, wakuNodeStatus } from '$lib/store';
 	import { wakuNode, waitForRemotePeers } from '$lib/waku';
 	import { scheduleApprovalsFetching, interval } from '$lib/backend/scheduledFetch';
 	import { onMount } from 'svelte';
+
+	let buttonText = 'Connect MetaMask';
+	$: {
+		if (!walletClient) {
+			buttonText = 'Install MetaMask';
+		}
+
+		if (walletClient && !$walletAddress) {
+			buttonText = 'Connect MetaMask';
+		}
+
+		if (walletClient && $walletAddress) {
+			buttonText = 'Connected';
+		}
+	}
 
 	async function establishWakuConnection() {
 		wakuNodeStatus.set('connecting');
@@ -44,6 +60,9 @@
 	});
 
 	async function connectWallet() {
+		if (!walletClient) {
+			return;
+		}
 		const [address] = await walletClient.request({ method: 'eth_requestAccounts' });
 		walletAddress.set(address);
 		localStorage.setItem('userWalletAddress', address);
@@ -61,21 +80,37 @@
 		wakuNodeStatus.set('disconnected');
 		clearInterval(interval);
 	}
+
+	async function onClick() {
+		if (!walletClient) {
+			window.open('https://metamask.io/download/', '_blank', 'noreferrer');
+		}
+
+		if (walletClient && !$walletAddress) {
+			connectWallet();
+		}
+
+		if (walletClient && $walletAddress) {
+			console.log('>>> sdfsdfsd');
+			disconnectWallet();
+		}
+	}
 </script>
 
 <div class="flex flex-col items-end">
 	<button
 		type="button"
 		class="inline-flex items-center gap-x-2 rounded-md bg-orange-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-orange-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:bg-orange-400"
-		on:click={!!$walletAddress ? disconnectWallet : connectWallet}
+		on:click={onClick}
 	>
-		{#if $walletAddress}
+		{#if !walletClient}
+			<IconDownload />
+		{:else if walletClient && $walletAddress}
 			<IconCheck />
-			Connected
 		{:else}
 			<IconPlus />
-			Connect MetaMask
 		{/if}
+		{buttonText}
 	</button>
 	{#if $walletAddress}
 		<p class="text-xs text-gray-400">{$walletAddress}</p>
