@@ -1,4 +1,5 @@
 # Live Token Approvals Status with Waku
+This project checks for approval status of Hop bridge contract on user's wallet for all the listed tokens on Polygon Chain. To get live updates, we use Waku lightpush and filter protocol.
 
 ## Installing dependencies
 
