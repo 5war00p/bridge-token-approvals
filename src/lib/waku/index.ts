@@ -5,13 +5,6 @@ import {
 export const wakuNode = await createLightNode({
     defaultBootstrap: true,
 })
-// Create and start a Light Node
-// const node = async () => {
-//     wakuNode = await createLightNode({
-//         defaultBootstrap: true,
-//     })
-// };
-// node().then(() => { }).catch(() => { })
 
 export const waitForRemotePeers = async () => {
     // Wait for a successful peer connection
