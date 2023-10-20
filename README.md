@@ -36,4 +36,5 @@ You can preview the production build with `pnpm run preview`.
 [Loom](https://www.loom.com/share/8e52ac7ffffa44d4adc7ce869d315f6d?sid=6c05627b-90ea-4e49-b78a-65780e22c0c2)
 
 ## Deployed URL
-https://bridge-token-approvals.vercel.app/
+- Vercel: https://bridge-token-approvals.vercel.app/
+- IPFS: https://k51qzi5uqu5dj57htsj70dwksocisgckponvlw3o1476p888d3aebuq5q22s6b.ipns.4everland.io
