@@ -14,7 +14,7 @@ With ideal polling you can synchronize within the device but what if I say there
 
 ## The Project
 
-As for the protype, I'm keeping the token list limited to the Polygon chain and the chosen bridge is  [Hop](https://hop.exchange/). The initial requirements for this project is to have a defined token list with required data - bridge address, token address and the additonal information like toke name, token symbol and icon to make it readable for the users.
+As for the protype, I'm keeping the token list limited to the Polygon chain and the chosen bridge is  [Hop](https://hop.exchange/). The initial requirements for this project is to have a defined token list with required data - bridge address, token address and the additonal information like token name, token symbol and icon to make it readable for the users.
 
 *Data: Tokens.ts*
 
@@ -270,7 +270,7 @@ The `subscribe` method returns the `unsubscribe` method, but in my case I segreg
 
 #### Sender
 
-Here is where the polling runs and does batch calling to all the token contracts and sends to the Waku topic that we ??reated??.
+Here is where the polling runs and does batch calling to all the token contracts and sends to the Waku topic that we have created.
 
 ```typescript
 import { get } from 'svelte/store'
@@ -408,7 +408,7 @@ You will notice the code blocks above uses other state values like `wakuNodeStat
 
 #### Wrap
 
-Although the problem that I solved here can be implmented in many ways, having decentralized solutions makes your app fully decentralized. Waku can be applied in several other cases too.
+And it's a wrap. Some of you may yell at screen that this problem can be solved in other ways. Yes it is, but the goal over here is to show how Waku plays key role in DApps irrespective of the size of the application. Additionally, users of DApp's may look for complete decentralization, if it misses then companies may loose their customers. So, to keep fully decentralize setup for your DApp one of the important characteristic is decentralized communication. By integrating Waku, it enables decentralised communication features to your application without compromising security or privacy or may be scalability if you are integrating in large applications.
 
 Do checkout the usecases over here: https://docs.waku.org/overview/use-cases
 
