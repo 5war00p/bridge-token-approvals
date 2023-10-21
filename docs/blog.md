@@ -95,11 +95,11 @@ As the main purpose of this blog is to showcase the waku's usecase, I will talk 
 
 Let's start with svelte installation, along with ESLint, Prettier and TypeScript. 
 
-![svelte-installation.png](C:\Users\Swaroop\Desktop\waku\svelte-installation.png)
+![svelte-installation](https://github.com/5war00p/bridge-token-approvals/assets/57614947/35ecfe45-3fa8-4ee8-896e-dfc01358feb6)
 
 Before heading up, let's look into the UI & UX.
 
-![UI_UX.png](C:\Users\Swaroop\Desktop\waku\UI_UX.png)
+![UI_UX](https://github.com/5war00p/bridge-token-approvals/assets/57614947/bbb95d06-0cf6-47e2-a6ff-92bd01436345)
 
 Elements:
 
@@ -115,11 +115,11 @@ Elements:
 
 User flow:
 
-![userflow.drawio.png](C:\Users\Swaroop\Downloads\userflow.drawio.png)
+![userflow drawio](https://github.com/5war00p/bridge-token-approvals/assets/57614947/033e2e9c-cf6c-46f4-b28e-8c874c249a88)
 
 Approval flow with Waku:
 
-![](C:\Users\Swaroop\AppData\Roaming\marktext\images\2023-10-20-12-59-43-image.png)
+![waku-arch](https://github.com/5war00p/bridge-token-approvals/assets/57614947/d09d5165-f0c5-4dbd-9807-e6638cd21acd)
 
 As we are gonna deal with smart contract addresses the core thing that we would need is a wallet connection and disconnection facility, so that user can perform transactions. 
 
