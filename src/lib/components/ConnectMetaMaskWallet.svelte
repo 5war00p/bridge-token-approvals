@@ -2,12 +2,16 @@
 	import IconPlus from './IconPlus.svelte';
 	import IconCheck from './IconCheck.svelte';
 	import IconDownload from './IconDownload.svelte';
-	import { walletClient } from '$lib/client';
+	import { publicClient, walletClient } from '$lib/client';
 	import { walletAddress, wakuNodeStatus } from '$lib/store';
 	import { wakuNode, waitForRemotePeers } from '$lib/waku';
 	import { scheduleApprovalsFetching, interval } from '$lib/backend/scheduledFetch';
 	import { onMount } from 'svelte';
+	import { polygon } from 'viem/chains';
+	import { switchToPolygon } from '$lib/approvals';
+	import Overlay from './Overlay.svelte';
 
+	let showOverlay = false;
 	let buttonText = 'Connect MetaMask';
 	$: {
 		if (!walletClient) {
@@ -55,6 +59,12 @@
 	onMount(async () => {
 		wakuNodeStatus.set('disconnected');
 		if ($walletAddress) {
+			const currentChainId = await publicClient?.getChainId();
+
+			if (currentChainId !== polygon.id) {
+				showOverlay = true;
+				await switchToPolygon();
+			}
 			await establishWakuConnection();
 		}
 	});
@@ -91,8 +101,21 @@
 		}
 
 		if (walletClient && $walletAddress) {
-			console.log('>>> sdfsdfsd');
 			disconnectWallet();
+		}
+	}
+
+	$: {
+		if (window.ethereum) {
+			window.ethereum.on('chainChanged', async (data: string) => {
+				// 0x89 is Hexadecimal representation of Polygon chainId (137)
+				if (data !== '0x89') {
+					showOverlay = true;
+					await switchToPolygon();
+				} else {
+					showOverlay = false;
+				}
+			});
 		}
 	}
 </script>
@@ -116,3 +139,4 @@
 		<p class="text-xs text-gray-400">{$walletAddress}</p>
 	{/if}
 </div>
+<Overlay show={showOverlay} />
