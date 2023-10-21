@@ -1,20 +1,20 @@
 ## The Intro
 
-To exchange crypto tokens from one token to another, we will use a bridge's where bridge uses its own liquidity pools for supported tokens and it takes care of transfering/exchanging tokens. Inorder to make that happen users should approve the bridge contracts on their wallets for each token. Approved means they are allowing their tokens to consume on that bridge which allows the brdige smart contract exchange from one token to another or the same token from one chain to another.
+To exchange crypto tokens from one token to another, we will use bridges where bridge uses its own liquidity pools for supported tokens and it takes care of transfering/exchanging tokens. In order to make that happen, users should approve the bridge contracts on their wallets for each token. Approved means users are allowing the brdige smart contract to move their tokens and exchange them from one token to another or the same token from one chain to another.
 
 ## The Problem
 
-Live Updates. As its a blockchain transaction, the result won't reflect immediately and frontend ends up with showing previous state until a page refresh/reload. Updating the  UI in relatime would be nice UX for most of the applications.
+Live Updates. As its a blockchain transaction, the result won't reflect immediately and frontend ends up with showing previous state until a page refresh/reload. Updating the  UI in relatime would be a nice UX for most of the applications.
 
 ## The Decentralized Solution
 
 Idea: Polling -> updating state -> re-rendering
 
-With ideal polling you can synchronize within the device but what if I say there is a solutoin where we sync across devices or may be across different nodes based on your use case. Waku's lightpush and filter protocol is what we needed over here, this enables us to syncronize across devices/sessions.
+With ideal polling you can synchronize within the device but what if I say there is a solutoin where we sync across devices or may be across different nodes based on your use case. Waku's lightpush and filter protocols are what we needed over here, they enable us to synchronize across devices/sessions.
 
 ## The Project
 
-As for the protype, I'm keeping the token list limited to Polygon chain and the bridge is  [Hop](https://hop.exchange/). The initial requirements for this project is to have a defined token list with required data - bridge address, token address and the additonals lik tokename, token symbol, icon to make it readable for the users.
+As for the protype, I'm keeping the token list limited to the Polygon chain and the chosen bridge is  [Hop](https://hop.exchange/). The initial requirements for this project is to have a defined token list with required data - bridge address, token address and the additonal information like token name, token symbol and icon to make it readable for the users.
 
 *Data: Tokens.ts*
 
@@ -77,9 +77,9 @@ const tokens: App.Token[] = [
 export default tokens
 ```
 
-The following techstack I'm going to use to build this idea:
+To build this Idea, I am usign the following technology stack:
 
-- Metamask
+- MetaMask
 
 - Protobuf
 
@@ -91,13 +91,13 @@ The following techstack I'm going to use to build this idea:
 
 - Waku
 
-As the main purpose of this blog is to showcase the waku's usecase, I will talk more on waku setup and assuming readers you are already familiar with Svelte and other frameworks.
+As the main purpose of this blog is to showcase the usecase of Waku, I will talk more about Waku setup and assume readers are already familiar with Svelte and other frameworks.
 
-Let's start with svelte installation, along with ESLint, Prettier and TypeScript. 
+Let's start with Svelte installation, along with ESLint, Prettier and TypeScript. 
 
 ![svelte-installation](https://github.com/5war00p/bridge-token-approvals/assets/57614947/35ecfe45-3fa8-4ee8-896e-dfc01358feb6)
 
-Before heading up, let's look into the UI & UX.
+Before moving on, let's look into the UI & UX.
 
 ![UI_UX](https://github.com/5war00p/bridge-token-approvals/assets/57614947/bbb95d06-0cf6-47e2-a6ff-92bd01436345)
 
@@ -121,9 +121,9 @@ Approval flow with Waku:
 
 ![waku-arch](https://github.com/5war00p/bridge-token-approvals/assets/57614947/d09d5165-f0c5-4dbd-9807-e6638cd21acd)
 
-As we are gonna deal with smart contract addresses the core thing that we would need is a wallet connection and disconnection facility, so that user can perform transactions. 
+As we are gonna deal with smart contract addresses the core thing that we would need is a wallet connection and disconnection facility, so that a user can perform transactions. 
 
-I'm gonna use metamask wallet (chrome extension only).
+I'm going to use MetaMask wallet (chrome extension only).
 
 References:
 
@@ -131,7 +131,7 @@ References:
 
 - https://docs.metamask.io/
 
-And Viem, takes care of batching, reading and writing contracts. In our case, we need this to grant, revoke and read token contracts. 
+And Viem, which takes care of batching, reading and writing contracts. In our case, we need this to grant and revoke allowance and read token contracts. 
 
 *Utils: approvals.ts*
 
@@ -191,7 +191,7 @@ export const allTokenApprovals = async (tokens: App.Token[], walletAddress: Addr
 }
 ```
 
-As it mentioned in flowchart,  with Waku you need to do several steps before utilizing sending and filtering functions.
+As is mentioned in the flowchart, Waku requires a few setup steps before utilizing sending and filtering functions.
 
 #### Create a Waku lightnode
 
@@ -270,7 +270,7 @@ The `subscribe` method returns the `unsubscribe` method, but in my case I segreg
 
 #### Sender
 
-Here is where the polling runs and does batch calling to all the token contracts and sends to the waku topic that we reated.
+Here is where the polling runs and does batch calling to all the token contracts and sends to the Waku topic that we have created.
 
 ```typescript
 import { get } from 'svelte/store'
@@ -339,7 +339,7 @@ export const subscribeTopic = async () => {
 }
 ```
 
-Now we had our backend polling logic and waku setup ready, lets import these function in frontend. As  I mentioned earlier wallet connection is the gateway to do transactions, we will be calling these function on wallet connection and disconnection.
+Now that we have our backend polling logic and Waku setup ready, lets import these functions in the frontend. As I mentioned earlier, wallet connection is the gateway to do transactions, we will be calling these functions on the wallet connection and disconnection.
 
 *Function: connectWallet*
 
@@ -371,7 +371,7 @@ Now we had our backend polling logic and waku setup ready, lets import these fun
     }
 ```
 
-*Function: establishWakuC``onnection*
+*Function: establishWakuConnection*
 
 ```typescript
     async function establishWakuConnection() {
@@ -404,11 +404,11 @@ Now we had our backend polling logic and waku setup ready, lets import these fun
     }
 ```
 
-You will notice the code blocks above uses other state values like wakuNodeStatus, lastSynced these are metrics to show user the peer connection status and last received time of a waku message.
+You will notice the code blocks above uses other state values like `wakuNodeStatus` or `lastSynced` these are metrics to show the user the peer connection status and last time we received a message ove Waku.
 
 #### Wrap
 
-Although the problem that I solved here can be implmented many ways, having decentralized solutions makes your app fully decentralized. Waku can be applied in several other cases too.
+And it's a wrap. Some of you may yell at screen that this problem can be solved in other ways. Yes it is, but the goal over here is to show how Waku plays key role in DApps irrespective of the size of the application. Additionally, users of DApp's may look for complete decentralization, if it misses then companies may loose their customers. So, to keep fully decentralize setup for your DApp one of the important characteristic is decentralized communication. By integrating Waku, it enables decentralised communication features to your application without compromising security or privacy or may be scalability if you are integrating in large applications.
 
 Do checkout the usecases over here: https://docs.waku.org/overview/use-cases
 
